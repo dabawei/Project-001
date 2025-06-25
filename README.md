@@ -12,3 +12,7 @@ bundle exec jekyll serve --source docs
 ```
 
 Then open `http://localhost:4000` in your browser.
+
+## Continuous Deployment
+
+Every push to the `main` branch triggers a GitHub Actions workflow that builds the site from the `docs/` directory and deploys it to GitHub Pages.
