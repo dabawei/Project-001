@@ -2,13 +2,13 @@ name: Publish to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: read      # allow checkout
+  pages: write        # allow deployment
+  id-token: write     # verify provenance
 
 concurrency:
   group: "pages"
@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4       # optional, but keeps things current
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -27,14 +27,13 @@ jobs:
           ruby-version: '3.1'
 
       - name: Install dependencies
-        run: |
-          bundle install --jobs 4 --retry 3
+        run: bundle install --jobs 4 --retry 3
 
       - name: Build site
         run: bundle exec jekyll build --source docs --destination site
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3   # ← upgraded
         with:
           path: ./site
 
@@ -47,4 +46,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v1
+        uses: actions/deploy-pages@v4            # ← upgraded
